@@ -1,21 +1,28 @@
-<h2> Create Account</h2>
-<%=form_tag '/users', method: :post do%>
- <div>
-  <%= label_tag :name%>
-  <%= text_field_tag :name%>
- </div>
- <div>
-  <%= label_tag :email%>
-  <%= text_field_tag :email%>
- </div>
- <div>
-  <%= label_tag :password%>
-  <%= password_field_tag :password%>
- </div>
- <div>
-  <%= label_tag :password_confirmation%>
-  <%= password_field_tag :password_confirmation%>
- </div>
+<%# ----- add these lines here: ----- %>
 
-<%= submit_tag 'Sign Up', class: 'btn btn-default'%>
-<%end%>
+<h1>Sign Up</h1>
+
+<%= form_for @user do |f| %>
+  <div>
+    <%= f.label :name %>
+    <%= f.text_field :name, autofocus: true %>
+  </div>
+  <div>
+    <%= f.label :email %>
+    <%= f.text_field :email %>
+  </div>
+
+  <div>
+    <%= f.label :password %>
+    <%= f.password_field :password %>
+  </div>
+  <div>
+    <%= f.label :password_confirmation %>
+    <%= f.password_field :password_confirmation %>
+  </div>
+  <div>
+    <%= f.submit "Sign up!" %>
+  </div>
+<% end %>
+
+<%# ----- end of added lines ----- %>
