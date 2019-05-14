@@ -10,12 +10,46 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_03_14_223603) do
+ActiveRecord::Schema.define(version: 2019_05_14_134439) do
+
+  create_table "categories", options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
+    t.string "name"
+    t.bigint "supercategory_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["supercategory_id"], name: "index_categories_on_supercategory_id"
+  end
 
   create_table "pers", options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "name"
+  end
+
+  create_table "products", options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "category_id"
+    t.index ["category_id"], name: "index_products_on_category_id"
+  end
+
+  create_table "properties", options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
+    t.bigint "category_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.string "name"
+    t.index ["category_id"], name: "index_properties_on_category_id"
+  end
+
+  create_table "property_values", options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
+    t.bigint "property_id"
+    t.bigint "product_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.string "type"
+    t.string "value"
+    t.index ["product_id"], name: "index_property_values_on_product_id"
+    t.index ["property_id"], name: "index_property_values_on_property_id"
   end
 
   create_table "tests", options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
@@ -33,4 +67,5 @@ ActiveRecord::Schema.define(version: 2019_03_14_223603) do
     t.string "name"
   end
 
+  add_foreign_key "products", "categories"
 end
