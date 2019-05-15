@@ -6,4 +6,7 @@ class Category < ApplicationRecord
   def is_cat?
     subcategories.empty?
   end
+  def is_root?
+    supercategory.nil?
+  end
 end
