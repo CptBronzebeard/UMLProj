@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_05_14_134439) do
+ActiveRecord::Schema.define(version: 2019_05_15_110219) do
 
   create_table "categories", options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
     t.string "name"
@@ -18,6 +18,23 @@ ActiveRecord::Schema.define(version: 2019_05_14_134439) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["supercategory_id"], name: "index_categories_on_supercategory_id"
+  end
+
+  create_table "entries", options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
+    t.bigint "product_id"
+    t.bigint "order_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["order_id"], name: "index_entries_on_order_id"
+    t.index ["product_id"], name: "index_entries_on_product_id"
+  end
+
+  create_table "orders", options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
+    t.bigint "user_id"
+    t.integer "state"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_orders_on_user_id"
   end
 
   create_table "pers", options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
@@ -38,6 +55,7 @@ ActiveRecord::Schema.define(version: 2019_05_14_134439) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "name"
+    t.string "type"
     t.index ["category_id"], name: "index_properties_on_category_id"
   end
 
@@ -65,6 +83,7 @@ ActiveRecord::Schema.define(version: 2019_05_14_134439) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "name"
+    t.boolean "admin"
   end
 
   add_foreign_key "products", "categories"
