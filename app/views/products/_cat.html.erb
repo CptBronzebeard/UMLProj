@@ -1,0 +1,14 @@
+<%if !(cat.is_cat?)%>
+
+    <li>
+    <%=cat.name%>
+    <ul>
+    <% cat.subcategories.each do |s|%>
+      <%= render partial: "cat", locals: {cat: s} %>
+    <% end %>
+    </ul>
+    </li>
+
+<% else %>
+  <li> <%= link_to cat.name, {controller: "categories", action: "get_props", id: cat.id}, method: :get, class: 'select_cat', :remote => true%></li>
+<% end %>

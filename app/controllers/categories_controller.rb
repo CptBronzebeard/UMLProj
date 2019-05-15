@@ -1,5 +1,5 @@
 class CategoriesController < ApplicationController
-  before_action :set_category, only: [:show, :edit, :update, :destroy]
+  before_action :set_category, only: [:show, :edit, :update, :destroy, :get_props]
 
   # GET /categories
   # GET /categories.json
@@ -60,7 +60,9 @@ class CategoriesController < ApplicationController
       format.json { head :no_content }
     end
   end
-
+  def get_props
+    @category.properties
+  end
   #def is_cat?
   #  subcategories.empty?
 #  end
