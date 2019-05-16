@@ -18,9 +18,25 @@ class ProductsController < ApplicationController
     #if params[:category]
       @product = Product.new
       @product.category = Category.find(params[:category])
+      @product.properties.each do |e|
+        tmp=PropertyValue.find_by(property_id:e.id,product_id:@product.id)
+        if tmp.nil?
+          tmp=e.getProp("")
+          tmp.product=@product
+        end
+        #byebug
+        @product.property_values.push(tmp)
+        #byebug
+      end
+      respond_to do |format|
+        format.js{}
+      end
     #else
     #  redirect_to ''
   end
+  def new_form
+  end
+
 
   # GET /products/1/edit
   def edit
@@ -127,6 +143,6 @@ class ProductsController < ApplicationController
     # Never trust parameters from the scary internet, only allow the white list through.
     def product_params
       #params.fetch(:product)
-      params.require(:product).permit(props: [p_id:[:s,:content]])
+      params.require(:product).permit(:name,:price)
     end
 end

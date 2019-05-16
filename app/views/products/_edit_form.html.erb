@@ -1,9 +1,19 @@
 <%=form_with(model: @product, local: true) do |form| %>
 <%=form.hidden_field :category, :value => @product.category.id%>
 <%# byebug %>
+Product name: <%=form.text_field :name%><br>
+Price: <%=form.number_field :price%>
+<br>
 <% @product.category.properties.each do |p| %>
     <%= form.fields_for "properties[]", p do |pr_field| %>
-      <%= pr_field.text_field :id, :value => @product.property_values.find_by(property:p).value %>
+      <% tmp = @product.property_values.find_by(property:p)%>
+      <%= p.name %>
+      <%if tmp.type == "StringValue"%>
+        <%= pr_field.text_field :id, :value => tmp.value %>
+      <%else%>
+        <%= pr_field.number_field :id, :value => tmp.value %>
+      <% end %>
+      <br>
     <% end %>
 
 <% end %>
