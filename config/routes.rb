@@ -5,6 +5,7 @@ Rails.application.routes.draw do
   get '/signup' => 'user#new'
   post '/users' => 'user#create'
   get '/categories/:id/properties' => 'categories#get_props'
+  get '/products/:id/edit_form' => 'products#edit_form'
   #get '/products' => 'products#index'
   #get '/products/:id' => 'products#show'
 #  get '/edit/:id/product' => 'products#edit'

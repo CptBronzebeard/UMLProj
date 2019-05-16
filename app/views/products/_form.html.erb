@@ -1,5 +1,8 @@
-<%= form_with(model: product, local: true) do |form| %>
+
       <%= render partial: "list", locals: {categories: Category.all} %>
+
+        <div id="replace"></div>
+
   <% if product.errors.any? %>
     <div id="error_explanation">
       <h2><%= pluralize(product.errors.count, "error") %> prohibited this product from being saved:</h2>
@@ -12,7 +15,4 @@
     </div>
   <% end %>
 
-  <div class="actions">
-    <%= form.submit %>
-  </div>
-<% end %>
+  
