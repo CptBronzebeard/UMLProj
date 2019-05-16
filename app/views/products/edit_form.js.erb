@@ -1,0 +1,2 @@
+//$('#replace').replaceWith('<%=j render :partial => "edit_form" %>');
+$("#replace").html("<%=escape_javascript(render :partial => 'edit_form')%>");

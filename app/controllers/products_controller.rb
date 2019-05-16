@@ -1,5 +1,5 @@
 class ProductsController < ApplicationController
-  before_action :set_product, only: [:show, :edit, :update, :destroy]
+  before_action :set_product, only: [:show, :edit, :update, :destroy,:edit_form]
   before_action :is_admin, except: [:index]
 
   # GET /products
@@ -17,6 +17,7 @@ class ProductsController < ApplicationController
   def new
     #if params[:category]
       @product = Product.new
+      @product.category = Category.find(params[:category])
     #else
     #  redirect_to ''
   end
@@ -28,8 +29,9 @@ class ProductsController < ApplicationController
   # POST /products
   # POST /products.json
   def create
+    byebug
     @product = Product.new(product_params)
-
+    byebug
     respond_to do |format|
       if @product.save
         format.html { redirect_to @product, notice: 'Product was successfully created.' }
@@ -46,6 +48,29 @@ class ProductsController < ApplicationController
   def update
     respond_to do |format|
       if @product.update(product_params)
+        @product.category = Category.find(params.fetch("product")["category"])
+        #byebug
+        tmp = PropertyValue.where(product_id:@product.id).where.not(property:@product.properties)
+        tmp.each do |i|
+          i.destroy
+        end
+        @product.properties.each do |e|
+
+          tmp=PropertyValue.find_by(product_id:@product.id,property_id:e.id)
+          if tmp.nil?
+            if e.type=="IntegerProperty"
+              tmp = IntegerValue.new
+            else
+              tmp = StringValue.new
+            end
+          end
+          tmp.property = e
+          tmp.product = @product
+          #byebug
+          tmp.value = params.fetch("product").fetch("properties")[e.id.to_s]["id"]
+          tmp.save
+            #code
+        end
         format.html { redirect_to @product, notice: 'Product was successfully updated.' }
         format.json { render :show, status: :ok, location: @product }
       else
@@ -53,6 +78,7 @@ class ProductsController < ApplicationController
         format.json { render json: @product.errors, status: :unprocessable_entity }
       end
     end
+    @product.save
   end
 
   # DELETE /products/1
@@ -65,6 +91,33 @@ class ProductsController < ApplicationController
     end
   end
 
+  def edit_form
+    #byebug
+    tmp = Category.find(params[:category])
+
+    if tmp != @product.category
+      @product.category=tmp
+      #@product.property_values.clear
+      #byebug
+      @product.properties.each do |e|
+        tmp=PropertyValue.find_by(property_id:e.id,product_id:@product.id)
+        if tmp.nil?
+          tmp=e.getProp("")
+          tmp.product=@product
+        end
+        #byebug
+        @product.property_values.push(tmp)
+        #byebug
+      end
+    #else
+    #  byebug
+    #  @product.property_values=PropertyValue.where(product_id:@product.id)
+    end
+
+      respond_to do |format|
+        format.js{}
+      end
+    end
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_product
@@ -73,6 +126,7 @@ class ProductsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def product_params
-      params.fetch(:product, {})
+      #params.fetch(:product)
+      params.require(:product).permit(props: [p_id:[:s,:content]])
     end
 end

@@ -1,0 +1,13 @@
+<%=form_with(model: @product, local: true) do |form| %>
+<%=form.hidden_field :category, :value => @product.category.id%>
+<%# byebug %>
+<% @product.category.properties.each do |p| %>
+    <%= form.fields_for "properties[]", p do |pr_field| %>
+      <%= pr_field.text_field :id, :value => @product.property_values.find_by(property:p).value %>
+    <% end %>
+
+<% end %>
+<div class="actions">
+  <%= form.submit %>
+</div>
+<%end%>

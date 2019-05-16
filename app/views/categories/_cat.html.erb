@@ -10,5 +10,5 @@
     </li>
 
 <% else %>
-  <li> <%= link_to cat.name, {controller: "categories", action: "get_props", id: cat.id}, method: :get, class: 'select_cat', :remote => true%></li>
+  <li> <%= link_to cat.name, {action: "edit_form", category: cat.id}, method: :get, class: 'select_cat', :remote => true%></li>
 <% end %>
