@@ -1,8 +1,11 @@
 
 <%categories.each do |cat|%>
+
   <%if cat.is_root?%>
   <ul>
-    <%= render partial: "cat", locals: {cat: cat} %>
+    <%#byebug%>
+
+    <%= render partial: "/products/cat", locals: {cat: cat,address:address,v_id:v_id,r:r} %>
     </ul>
   <% end %>
 <% end %>

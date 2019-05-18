@@ -1,0 +1,30 @@
+<%#filters.each do |ke,ve|%>
+<%#filters[ke]=<% custom_fields = CustomFieldsDecorator.new(@post.custom_fields) %>
+<%= form_tag("/categories/"+@category.id.to_s+"/filter", method: 'get',remote:true) do %>
+  <%i=0%>
+  <% @filters.each do |filt,v| %>
+    <%=filt.name%>
+    <br>
+    <%=hidden_field_tag "search",@search%>
+
+    <%j=0%>
+    <%if filt.type=="StringProperty"%>
+      <%v.each do |d|%>
+        <%#byebug%>
+        <%#= hidden_field_tag "fids[]",i%>
+        <%=d%>
+        <%= check_box_tag "filters["+filt.id.to_s+"][]", d  %>
+        <br>
+        <%j=j+1%>
+      <% end %>
+    <% else %>
+      <%=number_field_tag "filters["+filt.id.to_s+"][]","min"%>
+      <%=number_field_tag "filters["+filt.id.to_s+"][]","max"%>
+    <% end %>
+    <%i=i+1%>
+  <% end %>
+  <%=submit_tag%>
+<% end %>
+<div id="filter">
+<%=render partial:"filter"%>
+</div>

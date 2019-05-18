@@ -7,6 +7,7 @@ Price: <%=form.number_field :price%>
 <% @product.category.properties.each do |p| %>
     <%= form.fields_for "properties[]", p do |pr_field| %>
       <% tmp = @product.property_values.find_by(property:p)%>
+      <%#byebug%>
       <%= p.name %>
       <%if tmp.type == "StringValue"%>
         <%= pr_field.text_field :id, :value => tmp.value %>

@@ -4,11 +4,21 @@
     <%=cat.name%>
     <ul>
     <% cat.subcategories.each do |s|%>
-      <%= render partial: "cat", locals: {cat: s} %>
+      <%= render partial: "/products/cat", locals: {cat: s,address:address,v_id:v_id,r:r} %>
     <% end %>
     </ul>
     </li>
 
 <% else %>
-  <li> <%= link_to cat.name, {action: "edit_form", category: cat.id}, method: :get, class: 'select_cat', :remote => true%></li>
-<% end %>
+  <% if v_id.nil?%>
+    <%v_id=cat.id%>
+  <% end %>
+  <% if r %>
+  <%#byebug%>
+    <li> <%= link_to cat.name, {action: address, category: cat.id, id:v_id,search:@search}, method: :get, class: 'select_cat', :remote => true%></li>
+  <% else %>
+      <li> <%= link_to cat.name, {action: address, category: cat.id, id:v_id,search:@search}, method: :get, class: 'select_cat', :local=>true%></li>
+  <% end %>
+
+<%# end %>
+<%end%>

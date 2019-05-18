@@ -3,7 +3,7 @@
 <h1>Categories</h1>
 
 <%# byebug%>
-<%= render partial: "/products/list", locals: {categories: @categories,address:"build_cat",v_id:nil,r:false} %>
+<%= render partial: "/products/cat", locals: {cat: @category,address:"build_cat",v_id:@category.id,r:true} %>
 
 
 <br>

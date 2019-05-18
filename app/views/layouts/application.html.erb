@@ -16,6 +16,12 @@
 <% else %>
   <%= link_to 'Login', '/login' %> | <%= link_to 'Signup', '/signup' %>
 <% end %>
+  <div>
+  <%= form_tag("/categories/search", method: 'get',local:true) do %>
+    <%=text_field_tag "search"%>
+    <%=submit_tag%>
+  <%end%>
+  </div>
     <%= yield %>
   </body>
 </html>

@@ -1,5 +1,5 @@
 
-      <%= render partial: "list", locals: {categories: Category.all} %>
+      <%= render partial: "list", locals: {categories: Category.all,address:address,v_id:v_id,r:true} %>
 
         <div id="replace"></div>
 
@@ -14,5 +14,3 @@
       </ul>
     </div>
   <% end %>
-
-  

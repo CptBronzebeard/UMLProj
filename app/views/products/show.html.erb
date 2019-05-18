@@ -1,4 +1,21 @@
 <p id="notice"><%= notice %></p>
 
-<%= link_to 'Edit', edit_product_path(@product) %> |
-<%= link_to 'Back', products_path %>
+<%=form_with(model: @product, local: true) do |form| %>
+Product name: <%=form.label :name%><br>
+Price: <%=form.label :price%>
+<br>
+<% @product.category.properties.each do |p| %>
+    <%= form.fields_for "properties[]", p do |pr_field| %>
+      <% tmp = @product.property_values.find_by(property:p)%>
+      <%#byebug%>
+      <%= p.name %>
+      <%if tmp.type == "StringValue"%>
+        <%= pr_field.label :id, :value => tmp.value %>
+      <%else%>
+        <%= pr_field.label :id, :value => tmp.value %>
+      <% end %>
+      <br>
+    <% end %>
+
+<% end %>
+<%end%>

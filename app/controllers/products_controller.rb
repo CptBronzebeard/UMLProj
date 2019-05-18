@@ -18,23 +18,19 @@ class ProductsController < ApplicationController
     #if params[:category]
       @product = Product.new
       @product.category = Category.find(params[:category])
-      @product.properties.each do |e|
-        tmp=PropertyValue.find_by(property_id:e.id,product_id:@product.id)
-        if tmp.nil?
-          tmp=e.getProp("")
-          tmp.product=@product
-        end
-        #byebug
-        @product.property_values.push(tmp)
-        #byebug
-      end
+      @product.save
+
       respond_to do |format|
         format.js{}
       end
     #else
     #  redirect_to ''
+
   end
   def new_form
+    @product=Product.new
+    @product.category=Category.first
+    @product.save
   end
 
 
@@ -45,9 +41,9 @@ class ProductsController < ApplicationController
   # POST /products
   # POST /products.json
   def create
-    byebug
+    #byebug
     @product = Product.new(product_params)
-    byebug
+    #byebug
     respond_to do |format|
       if @product.save
         format.html { redirect_to @product, notice: 'Product was successfully created.' }
@@ -62,10 +58,11 @@ class ProductsController < ApplicationController
   # PATCH/PUT /products/1
   # PATCH/PUT /products/1.json
   def update
+    byebug
     respond_to do |format|
       if @product.update(product_params)
         @product.category = Category.find(params.fetch("product")["category"])
-        #byebug
+        byebug
         tmp = PropertyValue.where(product_id:@product.id).where.not(property:@product.properties)
         tmp.each do |i|
           i.destroy
@@ -143,6 +140,6 @@ class ProductsController < ApplicationController
     # Never trust parameters from the scary internet, only allow the white list through.
     def product_params
       #params.fetch(:product)
-      params.require(:product).permit(:name,:price)
+      params.require(:product).permit(:name,:price,property_values:[:value])
     end
 end
