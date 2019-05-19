@@ -58,11 +58,11 @@ class ProductsController < ApplicationController
   # PATCH/PUT /products/1
   # PATCH/PUT /products/1.json
   def update
-    byebug
+    #byebug
     respond_to do |format|
       if @product.update(product_params)
         @product.category = Category.find(params.fetch("product")["category"])
-        byebug
+        #byebug
         tmp = PropertyValue.where(product_id:@product.id).where.not(property:@product.properties)
         tmp.each do |i|
           i.destroy

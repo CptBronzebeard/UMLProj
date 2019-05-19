@@ -11,24 +11,37 @@ class CategoriesController < ApplicationController
   # GET /categories/1.json
   def show
     @search=params[:search]
-    #byebug
+    byebug
     if !@category.is_cat?
       @categories=Array.new
       @categories.push(@category)
 
       render "cat_list"
     else
-      render "build_cat"
+      redirect_to controller:'categories',action:'build_cat',id:@category.id,search:@search
+      #redirect_to "/categories/"+@category.id.to_s+"/catalog", search:@search
     end
   end
   def build_cat
     @search=params[:search]
-    @category=Category.find(params[:category])
+    @category=Category.find(params[:id])
     #byebug
     @filters = Hash.new
     @properties=@category.properties
-    @products=@category.products
+    @matches = Array.new
+    if @search.nil? || @search==""
+      #tmp=
+      @matches=@category.products
+    else
+      @category.products.each do |p|
+        if p.name.include?(params[:search])
+          @matches.push(p)
+        end
+      end
+    end
+    @products=@matches
     #byebug
+
     @category.properties.each do |p|
       tmp=p.property_values.map{|pv| pv.value}
       if p.type=="IntegerProperty"
@@ -107,18 +120,20 @@ class CategoriesController < ApplicationController
     #byebug
     @products=Array.new
     @search=params[:search]
+    @matches=Array.new
     filters=params[:filters]
-    if !filters.nil?
-      if @search.nil? || @search==""
-        #tmp=
-        @matches=@category.products
-      else
-        @category.products.each do |p|
-          if p.name.include?(params[:search])
-            @matches.push(p)
-          end
+    if @search.nil? || @search==""
+      #tmp=
+      @matches=@category.products
+    else
+      @category.products.each do |p|
+        if p.name.include?(params[:search])
+          @matches.push(p)
         end
       end
+    end
+    if !filters.nil?
+
       filters.each do |f,v|
           @matches.each do |e|
             tmp1=Property.find(f)
@@ -137,7 +152,7 @@ class CategoriesController < ApplicationController
 
        end
      else
-       @products=@category.products
+       @products=@matches
      end
     respond_to do |format|
       format.js{}
@@ -145,7 +160,27 @@ class CategoriesController < ApplicationController
   end
   def search
     @search=params[:search]
+    categories=Category.all
+    @matches=Array.new
+    @products=Array.new
+    categories.each do |cat|
+      cat.products.each do |p|
+        if p.name.include?(@search)
+          @products.push(p)
+          @matches.push(cat)
+        end
+      end
+    end
+    #byebug
+    @matches=@matches.uniq
 
+    if @matches.count==1
+      redirect_to controller:'categories',action:'show',id:@matches.first.id,search:@search
+    end
+    respond_to do |format|
+      format.html{}
+      format.js{}
+    end
   end
 
   #def is_cat?
@@ -156,6 +191,7 @@ class CategoriesController < ApplicationController
     # Use callbacks to share common setup or constraints between actions.
     def set_category
       @category = Category.find(params[:id])
+
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.

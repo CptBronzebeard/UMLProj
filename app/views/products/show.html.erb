@@ -1,8 +1,8 @@
 <p id="notice"><%= notice %></p>
 
 <%=form_with(model: @product, local: true) do |form| %>
-Product name: <%=form.label :name%><br>
-Price: <%=form.label :price%>
+Product name: <%=form.label :name, :value => @product.name%><br>
+Price: <%=form.label :price,:value => @product.price%>
 <br>
 <% @product.category.properties.each do |p| %>
     <%= form.fields_for "properties[]", p do |pr_field| %>
