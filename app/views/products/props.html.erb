@@ -1,0 +1,11 @@
+<%=@product.name%>
+<br>
+Price: <%=@product.price%>
+<br>
+<%@product.properties.each do |p|%>
+  <%=p.name%>: <%=@product.property_values.find_by(property_id:p.id).value%>
+  <br>
+<%end%>
+<div>
+<%= link_to 'Buy', {controller:'orders',action: 'add', product:@product.id}, method: :post, class: 'select_cat', :local => true%>
+</div>

@@ -3,7 +3,7 @@
   <%=hidden_field_tag :order,@order.id%>
   <%@order.entries.each do |e|%>
   <%#byebug%>
-    <div><%=e.product.name%> Amount: <%=e.amount%> Price: <%=e.amount * e.product.price%>
+    <div><%= link_to e.product.name, {controller: 'products',action: 'show', id:e.product.id}, method: :get, class: 'select_cat', :local=>true%> Amount: <%=e.amount%> Price: <%=e.amount * e.product.price%>
     <%= link_to 'Destroy', e, method: :delete, data: { confirm: 'Are you sure?' },remote:true %></div>
 
 <% end %>

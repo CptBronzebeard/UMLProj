@@ -1,6 +1,9 @@
 Name: <%=@user.name%>
+<br>
 E-mail: <%=@user.email%>
+<br>
 Order history:
+<br>
 <%orders=@user.orders.where(completed:true)%>
 <%orders.each do |o|%>
 <br>
@@ -8,8 +11,7 @@ Order history:
   <br>
   <%o.entries.each do |e|%>
     <div>
-      <%=e.product.name%>  Amount: <%=e.amount%>  Total: <%=e.total%>
+      <%= link_to e.product.name, {controller: 'products',action: 'show', id:e.product.id}, method: :get, class: 'select_cat', :local=>true%>  Amount: <%=e.amount%>  Total: <%=e.total%>
     </div>
-    <br>
   <% end %>
   <%end%>

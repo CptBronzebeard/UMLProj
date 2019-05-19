@@ -1,6 +1,6 @@
 class ProductsController < ApplicationController
   before_action :set_product, only: [:show, :edit, :update, :destroy,:edit_form]
-  before_action :is_admin, except: [:index]
+  before_action :is_admin, except: [:show]
 
   # GET /products
   # GET /products.json
@@ -11,6 +11,8 @@ class ProductsController < ApplicationController
   # GET /products/1
   # GET /products/1.json
   def show
+    @product = Product.find(params[:id])
+    render "props"
   end
 
   # GET /products/new
