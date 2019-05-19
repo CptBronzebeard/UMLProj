@@ -5,6 +5,17 @@ class UserController < ApplicationController
     @user = User.new
   end
 
+  def show
+    @user=current_user
+    #byebug
+    if current_user
+      render "profile"
+    else
+      redirect_to action:"new"
+    end
+  end
+
+
   def create
     @user = User.new(user_params)
 

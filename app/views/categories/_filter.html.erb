@@ -2,6 +2,7 @@
   <div>
     <%=e.name%>
     <%=e.price%>
+    <%= link_to 'Buy', {controller:'orders',action: 'add', product:e.id}, method: :get, class: 'select_cat', :local => true%>
   </div>
   <br>
 <% end %>

@@ -54,10 +54,11 @@ class EntriesController < ApplicationController
   # DELETE /entries/1
   # DELETE /entries/1.json
   def destroy
-    @entry.destroy
-    respond_to do |format|
-      format.html { redirect_to entries_url, notice: 'Entry was successfully destroyed.' }
-      format.json { head :no_content }
+    byebug
+    if cookies[:cart] == @entry.order_id.to_s
+      @entry.destroy
+      byebug
+      redirect_to controller:"orders", action:"deleted",method:"get"
     end
   end
 
