@@ -1,0 +1,15 @@
+Name: <%=@user.name%>
+E-mail: <%=@user.email%>
+Order history:
+<%orders=@user.orders.where(completed:true)%>
+<%orders.each do |o|%>
+<br>
+  Order date: <%=o.updated_at.to_date.to_s%>
+  <br>
+  <%o.entries.each do |e|%>
+    <div>
+      <%=e.product.name%>  Amount: <%=e.amount%>  Total: <%=e.total%>
+    </div>
+    <br>
+  <% end %>
+  <%end%>

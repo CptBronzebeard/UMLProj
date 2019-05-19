@@ -1,4 +1,12 @@
-<p id="notice"><%= notice %></p>
+<%= form_tag("/pay/", method: 'post',local:true) do %>
+<div id="entries">
+  <%=hidden_field_tag :order,@order.id%>
+  <%@order.entries.each do |e|%>
+  <%#byebug%>
+    <div><%=e.product.name%> Amount: <%=e.amount%> Price: <%=e.amount * e.product.price%>
+    <%= link_to 'Destroy', e, method: :delete, data: { confirm: 'Are you sure?' },remote:true %></div>
 
-<%= link_to 'Edit', edit_order_path(@order) %> |
-<%= link_to 'Back', orders_path %>
+<% end %>
+</div>
+<%=submit_tag%>
+<%end%>

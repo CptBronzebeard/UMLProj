@@ -1,0 +1,10 @@
+<h3>Here is the partial form</h3>
+<% @product = Product.new%>
+<%= form_for @product do |f|%>
+<% @product.category = @category%>
+<% @product.category.properties.each do |e|%>
+<%= f.fields_for :properties, prop do |pf| %>
+    Name: <%= pf.text_field :value %>
+<% end %>
+<% end %>
+<% end %>

@@ -11,7 +11,7 @@ class CategoriesController < ApplicationController
   # GET /categories/1.json
   def show
     @search=params[:search]
-    byebug
+    #byebug
     if !@category.is_cat?
       @categories=Array.new
       @categories.push(@category)

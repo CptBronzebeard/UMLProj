@@ -1,5 +1,5 @@
 class OrdersController < ApplicationController
-  before_action :set_order, only: [:show, :edit, :update, :destroy]
+  before_action :set_order, only: [:edit, :update, :destroy]
 
   # GET /orders
   # GET /orders.json
@@ -9,7 +9,26 @@ class OrdersController < ApplicationController
 
   # GET /orders/1
   # GET /orders/1.json
+  def pay
+    if (params[:order] == cookies[:cart]) && params[:order]!="" && !cookies[:cart].nil?
+      tmp = Order.find(cookies[:cart])
+      #payment logic insertion point
+      tmp.entries.each do |e|
+        e.total = e.amount * e.product.price
+        e.save
+      end
+      tmp.completed=true
+      tmp.save
+      render :file => 'public/payment.html'
+    end
+  end
+
   def show
+    if !(cookies[:cart].nil? || cookies[:cart]=="")
+      @order=Order.find(cookies[:cart])
+    else
+      render :file => 'public/empty.html'
+    end
   end
 
   # GET /orders/new
@@ -17,10 +36,42 @@ class OrdersController < ApplicationController
     @order = Order.new
   end
 
+  def add
+    @product=Product.find(params[:product])
+  end
+  def cart
+    #byebug
+    product = Product.find(params[:product])
+    amount = params[:Amount]
+
+    if cookies[:cart].nil? || cookies[:cart]==""
+      @order = Order.new
+      @order.user = current_user
+      @order.save
+      cookies[:cart] = @order.id
+    else
+      #byebug
+      @order = Order.find(cookies[:cart])
+    end
+    tmp = Entry.new
+    tmp.product=product
+    tmp.order_id = @order.id
+    tmp.amount = amount
+    tmp.save
+    redirect_to action:"show"
+  end
   # GET /orders/1/edit
   def edit
   end
+  def deleted
+    @order = Order.find(cookies[:cart])
+    if @order.entries.empty?
+      @order.destroy
+      cookies[:cart]=nil
+    end
+    redirect_to action:"show"
 
+  end
   # POST /orders
   # POST /orders.json
   def create
