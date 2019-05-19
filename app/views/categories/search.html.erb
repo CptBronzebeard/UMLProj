@@ -1,0 +1,6 @@
+<%if @matches.count > 0%>
+  <%@matches.each do |m|%>
+    <%= render partial: "/products/cat", locals: {cat: m,address:"build_cat",v_id:nil,r:false} %>
+  <% end %>
+  <%= render 'filter'%>
+<% end %>
