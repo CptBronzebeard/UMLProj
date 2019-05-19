@@ -12,7 +12,7 @@
 
   <body>
     <% if current_user %>
-  Signed in as <%= current_user.name %> | <%= link_to "Logout", '/logout' %>
+  Signed in as <%= current_user.name %> | <%= link_to 'Profile', '/user' %> | <%= link_to "Logout", '/logout' %>
 <% else %>
   <%= link_to 'Login', '/login' %> | <%= link_to 'Signup', '/signup' %>
 <% end %>
@@ -22,6 +22,13 @@
     <%=submit_tag "Search"%>
   <%end%>
   </div>
+
+  <div><%= link_to 'Catalog', '/categories' %> | <%= link_to 'Shopping cart', '/cart' %>
+  <%if current_user%>
+    <%if current_user.admin%>
+      | <%= link_to 'Admin_edit_prods', '/products' %>
+    <% end %>
+  <% end %> </div>
     <%= yield %>
   </body>
 </html>

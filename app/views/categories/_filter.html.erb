@@ -1,8 +1,9 @@
 <%@products.each do |e|%>
   <div>
-    <%=e.name%>
+    <%= link_to e.name, {controller: 'products',action: 'show', id:e.id}, method: :get, class: 'select_cat', :local=>true%>
+    <%#=e.name%>
     <%=e.price%>
-    <%= link_to 'Buy', {controller:'orders',action: 'add', product:e.id}, method: :get, class: 'select_cat', :local => true%>
+    <%= link_to 'Buy', {controller:'orders',action: 'add', product:e.id}, method: :post, class: 'select_cat', :local => true%>
   </div>
   <br>
 <% end %>
