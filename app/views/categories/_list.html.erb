@@ -1,8 +1,0 @@
-
-<%categories.each do |cat|%>
-  <%if cat.is_root?%>
-  <ul>
-    <%= render partial: "/categories/cat", locals: {cat: cat} %>
-    </ul>
-  <% end %>
-<% end %>

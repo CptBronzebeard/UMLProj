@@ -54,10 +54,10 @@ class EntriesController < ApplicationController
   # DELETE /entries/1
   # DELETE /entries/1.json
   def destroy
-    byebug
+    #byebug
     if cookies[:cart] == @entry.order_id.to_s
       @entry.destroy
-      byebug
+      #byebug
       redirect_to controller:"orders", action:"deleted",method:"get"
     end
   end
