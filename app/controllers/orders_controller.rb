@@ -17,7 +17,8 @@ class OrdersController < ApplicationController
         e.total = e.amount * e.product.price
         e.save
       end
-      tmp.completed=true
+      cookies[:cart]=nil
+      tmp.state=3
       tmp.save
       render :file => 'public/payment.html'
     end
@@ -25,7 +26,11 @@ class OrdersController < ApplicationController
 
   def show
     if !(cookies[:cart].nil? || cookies[:cart]=="")
-      @order=Order.find(cookies[:cart])
+      @order=Order.find_by(id:cookies[:cart])
+      if @order.nil?
+        cookies[:cart]=nil
+        render :file => 'public/empty.html'
+      end
     else
       render :file => 'public/empty.html'
     end
@@ -47,13 +52,17 @@ class OrdersController < ApplicationController
     if cookies[:cart].nil? || cookies[:cart]==""
       @order = Order.new
       @order.user = current_user
+      @order.state=0
       @order.save
       cookies[:cart] = @order.id
     else
       #byebug
       @order = Order.find(cookies[:cart])
     end
-    tmp = Entry.new
+    tmp = @order.entries.find_by(product_id:product.id)
+    if tmp.nil?
+      tmp = Entry.new
+    end
     tmp.product=product
     tmp.order_id = @order.id
     tmp.amount = amount

@@ -5,11 +5,12 @@ Rails.application.routes.draw do
   get '/logout' => 'sessions#destroy'# For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
   get '/signup' => 'user#new'
   post '/users' => 'user#create'
+    get '/products/new' => 'products#new_form'
   get '/categories/:id/properties' => 'categories#get_props'
   get '/products/:id' => 'products#show'
   get '/products/:id/edit_form' => 'products#edit_form'
   get '/products/new_form' => 'products#new'
-  get '/products/new' => 'products#new_form'
+
   get '/categories/:id/' => 'categories#show'
   get '/categories/:id/catalog' => 'categories#build_cat'
   get '/categories/:id/filter' => 'categories#filter'

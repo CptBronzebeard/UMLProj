@@ -1,21 +1,27 @@
 <p id="notice"><%= notice %></p>
 
 <%=form_with(model: @product, local: true) do |form| %>
-Product name: <%=form.label :name, :value => @product.name%><br>
-Price: <%=form.label :price,:value => @product.price%>
-<br>
+<table>
+  <tr><td>
+Product name:</td><td> <%=form.label :name, :value => @product.name%></td></tr>
+<tr><td>
+Price:</td><td> <%=form.label :price,:value => @product.price%></td></tr>
+
 <% @product.category.properties.each do |p| %>
     <%= form.fields_for "properties[]", p do |pr_field| %>
+    <tr><td>
       <% tmp = @product.property_values.find_by(property:p)%>
       <%#byebug%>
       <%= p.name %>
+      </td><td>
       <%if tmp.type == "StringValue"%>
         <%= pr_field.label :id, :value => tmp.value %>
       <%else%>
         <%= pr_field.label :id, :value => tmp.value %>
       <% end %>
-      <br>
+      </td></tr>
     <% end %>
 
 <% end %>
+</table>
 <%end%>
