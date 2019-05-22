@@ -1,17 +1,24 @@
+<table>
+  <tr><td>
 Name: <%=@user.name%>
-<br>
+</td></tr>
+<tr><td>
 E-mail: <%=@user.email%>
-<br>
+</td></tr>
+</table>
 Order history:
-<br>
-<%orders=@user.orders.where(completed:true)%>
+<table>
+<%orders=@user.orders.where(state:3)%>
+<%#byebug%>
 <%orders.each do |o|%>
-<br>
+  <tr><td>
   Order date: <%=o.updated_at.to_date.to_s%>
-  <br>
+  </td></tr>
   <%o.entries.each do |e|%>
-    <div>
-      <%= link_to e.product.name, {controller: 'products',action: 'show', id:e.product.id}, method: :get, class: 'select_cat', :local=>true%>  Amount: <%=e.amount%>  Total: <%=e.total%>
-    </div>
+    <tr><td>
+      <%= link_to e.product.name, {controller: 'products',action: 'show', id:e.product.id}, method: :get, class: 'select_cat', :local=>true%>
+      </td><td>Amount:</td><td> <%=e.amount%></td>  <td>Total:</td><td> <%=e.total%></td>
+    </tr>
   <% end %>
   <%end%>
+</table>

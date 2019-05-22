@@ -1,23 +1,33 @@
 <%=form_with(model: @product, local: true) do |form| %>
 <%=form.hidden_field :category, :value => @product.category.id%>
 <%# byebug %>
-Product name: <%=form.text_field :name%><br>
-Price: <%=form.number_field :price%>
-<br>
+<table>
+  <tr><td>
+Product name:</td><td> <%=form.text_field :name%>
+</td></tr>
+<tr><td>
+Price:</td><td> <%=form.number_field :price%>
+</td></tr>
 <% @product.category.properties.each do |p| %>
     <%= form.fields_for "properties[]", p do |pr_field| %>
+    <tr>
       <% tmp = @product.property_values.find_by(property:p)%>
       <%#byebug%>
+      <td>
       <%= p.name %>
+      </td>
+      <td>
       <%if tmp.type == "StringValue"%>
         <%= pr_field.text_field :id, :value => tmp.value %>
       <%else%>
         <%= pr_field.number_field :id, :value => tmp.value %>
       <% end %>
-      <br>
+      </td>
+      </tr>
     <% end %>
 
 <% end %>
+</table>
 <div class="actions">
   <%= form.submit %>
 </div>

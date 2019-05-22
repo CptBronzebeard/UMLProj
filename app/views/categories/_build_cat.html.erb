@@ -1,30 +1,44 @@
 <%#filters.each do |ke,ve|%>
 <%#filters[ke]=<% custom_fields = CustomFieldsDecorator.new(@post.custom_fields) %>
 <%= form_tag("/categories/"+@category.id.to_s+"/filter", method: 'get',remote:true) do %>
-  <%i=0%>
+  <div style="margin-top:20px;float: left;
+  width: 30%;">
+  <table>
   <% @filters.each do |filt,v| %>
+  <tr>
+    <td>
     <%=filt.name%>
-    <br>
+    </td>
+    </tr>
     <%=hidden_field_tag "search",@search%>
 
     <%j=0%>
     <%if filt.type=="StringProperty"%>
       <%v.each do |d|%>
-        <%#byebug%>
-        <%#= hidden_field_tag "fids[]",i%>
+        <tr>
+          <td>
         <%=d%>
+        </td>
+        <td>
         <%= check_box_tag "filters["+filt.id.to_s+"][]", d  %>
-        <br>
-        <%j=j+1%>
+        </td>
+        </tr>
       <% end %>
     <% else %>
-      <%=number_field_tag "filters["+filt.id.to_s+"][]","min"%>
-      <%=number_field_tag "filters["+filt.id.to_s+"][]","max"%>
+    <tr>
+      <td>
+      <%=number_field_tag "filters["+filt.id.to_s+"][]","min",{min: 0, max: 10000}%>
+      </td><td>
+      <%=number_field_tag "filters["+filt.id.to_s+"][]","max",{min: 0, max: 10000}%>
+      </td></tr>
     <% end %>
-    <%i=i+1%>
   <% end %>
+
+  </table>
   <%=submit_tag%>
+  </div>
 <% end %>
-<div id="filter">
+<div id="filter" style="margin-top:20px;float: left;
+  width: 70%;">
 <%=render partial:"filter"%>
 </div>

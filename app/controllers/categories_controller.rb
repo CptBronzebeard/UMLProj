@@ -11,7 +11,7 @@ class CategoriesController < ApplicationController
   # GET /categories/1.json
   def show
     @search=params[:search]
-    #byebug
+    #
     if !@category.is_cat?
       @categories=Array.new
       @categories.push(@category)
@@ -25,7 +25,7 @@ class CategoriesController < ApplicationController
   def build_cat
     @search=params[:search]
     @category=Category.find(params[:id])
-    #byebug
+    #
     @filters = Hash.new
     @properties=@category.properties
     @matches = Array.new
@@ -40,7 +40,7 @@ class CategoriesController < ApplicationController
       end
     end
     @products=@matches
-    #byebug
+    #
 
     @category.properties.each do |p|
       tmp=p.property_values.map{|pv| pv.value}
@@ -49,7 +49,7 @@ class CategoriesController < ApplicationController
         #@fiilters[p].each do |e|
       else
         tmp1=tmp.uniq
-        #byebug
+        #
         @filters[p]=tmp1
       end
     end
@@ -88,7 +88,7 @@ class CategoriesController < ApplicationController
   # PATCH/PUT /categories/1
   # PATCH/PUT /categories/1.json
   def update
-    byebug
+
     respond_to do |format|
       if @category.update(category_params)
         format.html { redirect_to @category, notice: 'Category was successfully updated.' }
@@ -117,7 +117,7 @@ class CategoriesController < ApplicationController
     end
   end
   def filter
-    #byebug
+    #
     @products=Array.new
     @search=params[:search]
     @matches=Array.new
@@ -133,27 +133,59 @@ class CategoriesController < ApplicationController
       end
     end
     if !filters.nil?
+      #
+      @matches.each do |e|
+        flag=true
+      filters.each do |f,va|
 
-      filters.each do |f,v|
-          @matches.each do |e|
             tmp1=Property.find(f)
 
               tmp=e.property_values.find_by(property_id:f)
               if tmp1.type=="StringProperty"
-               if v.include?(tmp.value)
-                 @products.push(e)
+                #byebug
+               if va.include?(tmp.value)
+               else
+                 flag=false
                end
              else
-               if tmp.value>=v.first && tmp.value<=v.second
-                 @products.push(e)
-               end
+               a1 = va.first
+               a2 = va.second
+               tmpv = tmp.value.to_i
+               #
+               if a1!="" && a2!=""
+                 if tmpv>=va.first.to_i && tmpv<=va.second.to_i
+                 else
+                   flag=false
+                 end
+               else
+                 if a1=="" && a2!=""
+
+                   if tmpv<=va.second.to_i
+
+                   else
+                     flag=false
+                   end
+                 else
+                   if a1!="" && a2==""
+                     if tmpv>=va.first.to_i
+                     else
+                       flag=false
+                     end
+                   else
+
+                   end
+                end
+              end
             end
           end
-
+          if flag
+            @products.push(e)
+          end
        end
      else
        @products=@matches
      end
+     @products=@products.uniq
     respond_to do |format|
       format.js{}
     end
@@ -171,9 +203,9 @@ class CategoriesController < ApplicationController
         end
       end
     end
-    #byebug
+    #
     @matches=@matches.uniq
-
+    @products=@products.uniq
     if @matches.count==1
       redirect_to controller:'categories',action:'show',id:@matches.first.id,search:@search
     end

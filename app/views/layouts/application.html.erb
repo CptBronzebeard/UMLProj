@@ -29,6 +29,10 @@
       | <%= link_to 'Admin_edit_prods', '/products' %>
     <% end %>
   <% end %> </div>
+  <% if alert %>
+      	    <%= alert %>
+	<% end %>
+  <hr>
     <%= yield %>
   </body>
 </html>

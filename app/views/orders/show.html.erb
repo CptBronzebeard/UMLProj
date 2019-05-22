@@ -1,12 +1,19 @@
 <%= form_tag("/pay/", method: 'post',local:true) do %>
 <div id="entries">
+  <table>
   <%=hidden_field_tag :order,@order.id%>
   <%@order.entries.each do |e|%>
   <%#byebug%>
-    <div><%= link_to e.product.name, {controller: 'products',action: 'show', id:e.product.id}, method: :get, class: 'select_cat', :local=>true%> Amount: <%=e.amount%> Price: <%=e.amount * e.product.price%>
-    <%= link_to 'Destroy', e, method: :delete, data: { confirm: 'Are you sure?' },remote:true %></div>
-
+    <tr>
+      <td>
+    <%= link_to e.product.name, {controller: 'products',action: 'show', id:e.product.id}, method: :get, class: 'select_cat', :local=>true%></td>
+    <td>Amount: <%=e.amount%> Price: <%=e.amount * e.product.price%></td>
+    <td>
+    <%= link_to 'Destroy', e, method: :delete, data: { confirm: 'Are you sure?' },remote:true %>
+    </td>
+    </tr>
 <% end %>
+</table>
 </div>
 <%=submit_tag%>
 <%end%>

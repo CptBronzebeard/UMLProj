@@ -1,11 +1,16 @@
+<table>
+
+<tr><td>
 <%=@product.name%>
-<br>
-Price: <%=@product.price%>
-<br>
+</td></tr><tr><td>
+Price:</td><td> <%=@product.price%>
+</td></tr>
 <%@product.properties.each do |p|%>
-  <%=p.name%>: <%=@product.property_values.find_by(property_id:p.id).value%>
-  <br>
+<tr><td>
+  <%=p.name%>:</td><td> <%=@product.property_values.find_by(property_id:p.id).value%>
+  </td></tr>
 <%end%>
+</table>
 <div>
 <%= link_to 'Buy', {controller:'orders',action: 'add', product:@product.id}, method: :post, class: 'select_cat', :local => true%>
 </div>

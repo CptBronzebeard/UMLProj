@@ -1,10 +1,21 @@
 <%= form_tag("/cart/", method: 'post',local:true) do %>
+<table>
+  <tr>
+    <td>
   <%=label_tag 'Name', @product.name%>
+    </td>
   <%=hidden_field_tag :product,@product.id%>
   <script>
     var prce = '<%= @product.price %>';
   </script>
+  <td>
   <%=number_field_tag 'Amount', 1, min:1,:onchange => "document.getElementById('price').innerHTML = this.value*prce;"%>
+  </td>
+  <td>
   <%=label_tag 'Total', @product.price, :id=>'price'%>
+  </td>
+  </tr>
+  <tr><td>
   <%=submit_tag%>
+  </td></tr></<table>
 <% end %>
